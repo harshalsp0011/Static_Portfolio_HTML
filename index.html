@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harshal Patil - Project Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: "Warm Neutral" - A combination of Stone, Slate, and a muted Teal for a professional and calm aesthetic. -->
+    <!-- Application Structure Plan: A comprehensive single-page portfolio. The structure now includes a fixed navigation bar for easy access to different sections: Home, About, Skills, Experience, Projects, and Certifications. The "Home" section provides an introductory header. The "About" section presents personal contact details. The "Skills" section offers a detailed, categorized list of technical and soft skills. The "Core Technology Proficiency" chart (existing) quantifies technologies used across projects. The "Experience" section details professional work history. The "Projects" section is enhanced to include both the existing interactive, filterable grid of detailed projects and a new sub-section for additional notable projects from the resume. Finally, a "Certifications" section lists professional qualifications. This structure was chosen to provide a holistic view of the user's profile, allowing visitors to navigate seamlessly between different aspects of their professional background, from high-level summaries to specific project details and qualifications. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Comprehensive list of projects with associated technologies and domains, plus full resume details (personal info, education, skills, experience, other projects, certifications).
+        - Goal: Summarize technical proficiency, allow targeted exploration of projects, and present a complete professional profile.
+        - Viz/Presentation Method:
+            - A horizontal bar chart (Chart.js/Canvas) for core technology frequency (existing).
+            - Responsive grid of cards (HTML/Tailwind) for detailed projects (existing).
+            - Categorized lists (HTML/Tailwind) for detailed skills, education, experience bullet points, and certifications.
+            - Simple list items or smaller cards for "Other Notable Projects" to differentiate from the main detailed portfolio.
+            - Standard HTML elements for personal contact information and section headers.
+        - Interaction: 
+            - Filter buttons for detailed projects (existing).
+            - Smooth scrolling navigation links (JavaScript) to jump between sections.
+        - Justification: This multi-faceted approach ensures all resume information is presented clearly and accessibly. The existing interactive project filtering is retained, and new sections are designed for scannability and ease of consumption. The overall design prioritizes user understanding and a smooth browsing experience.
+        - Library/Method: Chart.js for the canvas-based chart; Vanilla JavaScript for filtering logic and smooth scrolling; Tailwind CSS for all styling and responsive layout.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .project-card {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .card-hidden {
+            transform: scale(0.95);
+            opacity: 0;
+            display: none;
+        }
+        .tech-category-heading {
+            font-weight: 600;
+            color: #1e293b; /* slate-800 */
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .tech-tag {
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-slate-900 text-white p-4 sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto flex flex-wrap justify-center md:justify-between items-center">
+            <a href="#home" class="text-xl font-bold mb-2 md:mb-0">Harshal Patil</a>
+            <div class="flex flex-wrap justify-center gap-4 text-sm">
+                <a href="#about" class="hover:text-teal-300 transition-colors">About</a>
+                <a href="#skills" class="hover:text-teal-300 transition-colors">Skills</a>
+                <a href="#experience" class="hover:text-teal-300 transition-colors">Experience</a>
+                <a href="#projects" class="hover:text-teal-300 transition-colors">Projects</a>
+                <a href="#certifications" class="hover:text-teal-300 transition-colors">Certifications</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- Header / Home Section -->
+        <header id="home" class="text-center mb-10 pt-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900">Harshal Patil - Comprehensive Portfolio</h1>
+            <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Welcome to my interactive portfolio, showcasing my expertise in data science, machine learning, big data, and software development. Explore my projects and professional journey.</p>
+        </header>
+
+        <!-- About Section -->
+        <section id="about" class="mb-12 bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-6 text-slate-900">About Me</h2>
+            <div class="max-w-2xl mx-auto text-center text-slate-700">
+                <p class="mb-2"><strong>Phone:</strong> 716-750-9045</p>
+                <p class="mb-2"><strong>Email:</strong> <a href="mailto:hpatil2@buffalo.edu" class="text-teal-600 hover:underline">hpatil2@buffalo.edu</a></p>
+                <p class="mb-2"><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/harshalsp0011/" target="_blank" class="text-teal-600 hover:underline">linkedin.com/in/harshalsp0011</a></p>
+                <p class="mb-4"><strong>Location:</strong> New York, USA</p>
+                <p class="text-base leading-relaxed">I am a passionate and results-driven professional with a strong background in Data Science and Software Engineering. My expertise spans across developing scalable web applications, designing robust database systems, implementing advanced machine learning models, and building real-time big data pipelines. I am committed to leveraging technology to solve complex problems and drive impactful solutions.</p>
+            </div>
+            <h3 class="text-2xl font-bold text-center mb-4 mt-8 text-slate-900">Education</h3>
+            <div class="max-w-2xl mx-auto space-y-4">
+                <div class="bg-slate-50 p-4 rounded-lg shadow-sm">
+                    <h4 class="text-lg font-semibold text-slate-800">MS Engineering Science (Data Science)</h4>
+                    <p class="text-slate-600">SUNY Buffalo, New York, USA</p>
+                    <p class="text-slate-500 text-sm">Aug. 2024 -- Present</p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg shadow-sm">
+                    <h4 class="text-lg font-semibold text-slate-800">Bachelor of Engineering in Electronics and Telecommunication</h4>
+                    <p class="text-slate-600">Modern Education Society's College of Engineering, Maharashtra, India</p>
+                    <p class="text-slate-500 text-sm">Aug. 2018 -- April 2022</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="mb-12 bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-6 text-slate-900">Skills Summary</h2>
+            <div class="max-w-3xl mx-auto">
+                <div class="mb-4">
+                    <span class="tech-category-heading">Programming Languages:</span>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Python</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">SQL</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">C#</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">R</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">C++</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">JavaScript</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">HTML/CSS</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Data structures</span>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <span class="tech-category-heading">Frameworks:</span>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">TensorFlow</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Blazor</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">.NET</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">React</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Camunda Workflow</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Entity Framework</span>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <span class="tech-category-heading">Libraries:</span>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Pandas</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">NumPy</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Matplotlib</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Scikit-learn</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Keras</span>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <span class="tech-category-heading">Big Data & Distributed Computing:</span>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Apache PySpark</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Hadoop</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">HDFS</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">MapReduce</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Spark SQL</span>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <span class="tech-category-heading">Cloud Platforms:</span>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Microsoft Azure</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">AWS</span>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <span class="tech-category-heading">Tools & Platforms:</span>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Azure</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Git</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Tableau</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Docker</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Power BI</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">VS Code</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Snowflake</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Visual Studio</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Matlab</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Swagger</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Postman</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Office</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Excel</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">R-Studio</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Jupyter Notebook</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">PostgreSQL</span>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <span class="tech-category-heading">Soft Skills:</span>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Leadership</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Time Management</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Team Collaboration</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Communication</span><span class="tech-tag text-sm font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Attention to Detail</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Technology Proficiency Chart -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-center mb-6 text-slate-900">Core Technology Proficiency Across Projects</h2>
+            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg">
+                <div class="chart-container">
+                    <canvas id="skillsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="mb-12 bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-6 text-slate-900">Experience</h2>
+            <div class="max-w-3xl mx-auto space-y-6">
+                <div class="bg-slate-50 p-4 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-semibold text-slate-800">Assistant Manager (Senior Software Developer Engineer)</h3>
+                    <p class="text-slate-600">Reliance Jio Platforms LTD, New Mumbai, India</p>
+                    <p class="text-slate-500 text-sm mb-3">Sept 2022 -- July 2024</p>
+                    <ul class="list-disc list-inside text-slate-700 space-y-1 text-sm">
+                        <li>Planned, designed, and developed web applications to achieve company objectives, scalable web apps were designed and created following best practices for software development.</li>
+                        <li>Built automation scripts using Mudblazor, reducing server downtime by 10 hours monthly while maintaining a database of 100,000+ records.</li>
+                        <li>Designed APIs to improve operational operations and increase data accessibility.</li>
+                        <li>Camunda BPMN was used to model and implement automation process workflows and systems, increasing operational efficiency.</li>
+                        <li>Oversaw MySQL databases emphasizing data integrity and analysis-ready reporting.</li>
+                        <li>Worked with QA teams and carried out thorough unit testing to produce software that is error-free and of the highest caliber.</li>
+                        <li>Completed several projects on schedule and within budget while maintaining high standards of quality.</li>
+                        <li>Oversaw projects to raise development standards, review procedures, and testing.</li>
+                        <li>Encouraged cross-functional teams to have an innovative, well-communicated, and ever-learning culture.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-6 text-slate-900">My Projects</h2>
+
+            <!-- Filter Controls for Main Projects -->
+            <h3 class="text-2xl font-bold text-center mb-6 text-slate-900">Detailed Projects (Filter by Domain)</h3>
+            <div id="filter-container" class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-8">
+                <button data-filter="all" class="filter-btn active bg-slate-800 text-white font-semibold py-2 px-5 rounded-full shadow-md transition-transform transform hover:scale-105">Show All</button>
+                <button data-filter="machine-learning" class="filter-btn bg-white hover:bg-slate-100 text-slate-700 font-semibold py-2 px-5 rounded-full shadow-md transition-transform transform hover:scale-105">Machine Learning</button>
+                <button data-filter="data-engineering" class="filter-btn bg-white hover:bg-slate-100 text-slate-700 font-semibold py-2 px-5 rounded-full shadow-md transition-transform transform hover:scale-105">Data Engineering</button>
+                <button data-filter="time-series" class="filter-btn bg-white hover:bg-slate-100 text-slate-700 font-semibold py-2 px-5 rounded-full shadow-md transition-transform transform hover:scale-105">Time Series</button>
+                <button data-filter="software-dev" class="filter-btn bg-white hover:bg-slate-100 text-slate-700 font-semibold py-2 px-5 rounded-full shadow-md transition-transform transform hover:scale-105">Software Development</button>
+                <button data-filter="data-analysis" class="filter-btn bg-white hover:bg-slate-100 text-slate-700 font-semibold py-2 px-5 rounded-full shadow-md transition-transform transform hover:scale-105">Data Analysis</button>
+            </div>
+
+            <!-- Projects Grid for Main Projects -->
+            <main id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+
+                <!-- Project 1: Income Classification -->
+                <article class="project-card bg-white rounded-xl shadow-lg p-6 flex flex-col" data-skills="machine-learning,data-engineering,software-dev,data-analysis">
+                    <h3 class="text-xl font-bold mb-3 text-slate-900">1. Income Classification</h3>
+                    <p class="text-slate-600 mb-4 text-sm flex-grow">An end-to-end MLOps pipeline to classify income levels, featuring data preparation from a normalized database, extensive experimentation with multiple models, and deployment as a containerized cloud application with a Streamlit front-end.</p>
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-2 text-slate-700">Technologies Used:</h4>
+                        <div class="flex flex-wrap gap-2 tech-tags">
+                            <span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Python</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Scikit-learn</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">SQL</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">MLFlow</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">FastAPI</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Docker</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Streamlit</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 2: Temperature Forecast -->
+                <article class="project-card bg-white rounded-xl shadow-lg p-6 flex flex-col" data-skills="time-series,machine-learning,data-analysis">
+                    <h3 class="text-xl font-bold mb-3 text-slate-900">2. Short-Term Temp Forecast</h3>
+                    <p class="text-slate-600 mb-4 text-sm flex-grow">A sophisticated hybrid model combining ARIMA and LSTM for highly accurate short-term temperature forecasting across 35 U.S. cities, using a dynamic weighting mechanism to optimize predictions based on regional performance.</p>
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-2 text-slate-700">Technologies Used:</h4>
+                        <div class="flex flex-wrap gap-2 tech-tags">
+                            <span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Python</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">TensorFlow/Keras</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">statsmodels</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 3: Job Portal Database -->
+                <article class="project-card bg-white rounded-xl shadow-lg p-6 flex flex-col" data-skills="data-engineering,software-dev">
+                    <h3 class="text-xl font-bold mb-3 text-slate-900">3. Job Portal Database System</h3>
+                    <p class="text-slate-600 mb-4 text-sm flex-grow">Designed and implemented a robust, centralized PostgreSQL database system (normalized to BCNF) to streamline recruitment workflows, featuring advanced SQL queries for skill matching and performance optimization through indexing.</p>
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-2 text-slate-700">Technologies Used:</h4>
+                        <div class="flex flex-wrap gap-2 tech-tags">
+                            <span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">PostgreSQL</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">SQL</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">faker</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">PgAdmin</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 4: LinkedIn Job Market Analysis -->
+                <article class="project-card bg-white rounded-xl shadow-lg p-6 flex flex-col" data-skills="data-engineering,machine-learning,data-analysis">
+                    <h3 class="text-xl font-bold mb-3 text-slate-900">4. Job Market Analysis</h3>
+                    <p class="text-slate-600 mb-4 text-sm flex-grow">An end-to-end big data pipeline analyzing 1.3M LinkedIn job postings. Utilized Hadoop/HDFS for ingestion, PySpark for distributed processing, and Spark MLlib for job classification, skill demand prediction, and clustering models.</p>
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-2 text-slate-700">Technologies Used:</h4>
+                        <div class="flex flex-wrap gap-2 tech-tags">
+                            <span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Hadoop</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">PySpark</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Spark MLlib</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Word Clouds</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 5: Store Sales Forecast -->
+                <article class="project-card bg-white rounded-xl shadow-lg p-6 flex flex-col" data-skills="time-series,data-analysis">
+                    <h3 class="text-xl font-bold mb-3 text-slate-900">5. Time Series Store Sales Forecast</h3>
+                    <p class="text-slate-600 mb-4 text-sm flex-grow">Forecasting store sales from a Kaggle dataset with a focus on robust handling of missing data and model selection between classical statistical models like ETS and Holt-Winters, evaluated using RMSE and residual analysis.</p>
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-2 text-slate-700">Technologies Used:</h4>
+                        <div class="flex flex-wrap gap-2 tech-tags">
+                            <span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">R</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Python</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">forecast</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">ggplot2</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 6: E-Commerce Recommendation System -->
+                <article class="project-card bg-white rounded-xl shadow-lg p-6 flex flex-col" data-skills="machine-learning,data-engineering,software-dev">
+                    <h3 class="text-xl font-bold mb-3 text-slate-900">6. E-Commerce Reco System</h3>
+                    <p class="text-slate-600 mb-4 text-sm flex-grow">A scalable product recommendation system using collaborative filtering (ALS) on implicit user feedback. Exposed via a high-performance FastAPI, containerized with Docker, and deployed on AWS EC2 for real-time recommendations.</p>
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-2 text-slate-700">Technologies Used:</h4>
+                        <div class="flex flex-wrap gap-2 tech-tags">
+                            <span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Python</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">FastAPI</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">implicit</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">scipy</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Docker</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">AWS EC2</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Project 7: Real-Time Analytics Pipeline -->
+                <article class="project-card bg-white rounded-xl shadow-lg p-6 flex flex-col" data-skills="data-engineering,software-dev">
+                    <h3 class="text-xl font-bold mb-3 text-slate-900">7. Real-Time Analytics Pipeline</h3>
+                    <p class="text-slate-600 mb-4 text-sm flex-grow">A real-time analytics pipeline processing e-commerce user events from Kafka with Spark Structured Streaming. It aggregates insights like funnel analysis and stores results in PostgreSQL for future dashboard visualization.</p>
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-2 text-slate-700">Technologies Used:</h4>
+                        <div class="flex flex-wrap gap-2 tech-tags">
+                            <span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Python</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Apache Kafka</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Spark Streaming</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">PostgreSQL</span><span class="tech-tag text-xs font-medium bg-teal-100 text-teal-800 py-1 px-3 rounded-full">Docker</span>
+                        </div>
+                    </div>
+                </article>
+
+            </main>
+
+            <!-- Other Notable Projects Section -->
+            <h3 class="text-2xl font-bold text-center mb-6 text-slate-900">Other Notable Projects</h3>
+            <div class="max-w-4xl mx-auto space-y-6 bg-white p-6 rounded-xl shadow-lg">
+                <div class="p-4 bg-slate-50 rounded-lg shadow-sm">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-1">Fall Detection Using Image Processing (Machine Learning, Deep Learning)</h4>
+                    <p class="text-slate-700 text-sm">Developed a system using video input, machine learning, and deep learning (CNNs) to accurately identify human falls through classification, feature extraction, and image pre-processing.</p>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-lg shadow-sm">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-1">Smart Door and Security System (Embedded Systems, IoT)</h4>
+                    <p class="text-slate-700 text-sm">Created an automated door lock and real-time home security monitoring system, integrating ILC7107, Arduino, PCB, Bluetooth, Relay, GSM, and LCD for communication and control.</p>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-lg shadow-sm">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-1">Machine Learning for the Identification of False News (Data Analysis, Recurrent Neural Networks)</h4>
+                    <p class="text-slate-700 text-sm">Cleaned text data, performed data analysis with visualizations, and constructed/trained a Recurrent Neural Network (RNN) model with LSTM units to identify bogus news, improving accuracy and dependability.</p>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-lg shadow-sm">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-1">Database Operations Web Application (Web Development)</h4>
+                    <p class="text-slate-700 text-sm">Developed a web application using REST APIs for CRUD operations on a database, utilizing HTML/CSS for front-end and SQL, .NET, Entity Framework, and C# for back-end development.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certifications" class="mb-12 bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-6 text-slate-900">Certifications</h2>
+            <div class="max-w-2xl mx-auto">
+                <ul class="list-disc list-inside text-slate-700 space-y-2">
+                    <li>Python for Data Science, AI, and Development</li>
+                    <li>Introduction to Cloud Computing</li>
+                    <li>Web development with HTML, CSS, and JavaScript</li>
+                    <li>Introduction to Entity Framework</li>
+                    <li>Developing Front-End app with React</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Chart.js: Skills Summary Chart
+            const techElements = document.querySelectorAll('.tech-tag');
+            const techCounts = {};
+            techElements.forEach(tag => {
+                const tech = tag.textContent;
+                techCounts[tech] = (techCounts[tech] || 0) + 1;
+            });
+
+            const sortedTech = Object.entries(techCounts).sort(([, a], [, b]) => a - b);
+            const labels = sortedTech.map(item => item[0]);
+            const data = sortedTech.map(item => item[1]);
+
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            const skillsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Project Count',
+                        data: data,
+                        backgroundColor: 'rgba(13, 148, 136, 0.7)', // teal-600 with opacity
+                        borderColor: 'rgba(15, 118, 110, 1)', // teal-700
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                precision: 0,
+                                color: '#475569' // slate-600
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                             ticks: {
+                                color: '#475569' // slate-600
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Frequency of Key Technologies Across Projects',
+                            font: {
+                                size: 16,
+                                weight: '600'
+                            },
+                            color: '#0f172a' // slate-900
+                        },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 12 },
+                            padding: 10,
+                            cornerRadius: 4,
+                            displayColors: false
+                        }
+                    }
+                }
+            });
+
+            // Filter Logic for Main Projects
+            const filterContainer = document.getElementById('filter-container');
+            const projects = document.querySelectorAll('.project-card');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+
+            filterContainer.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'BUTTON') return;
+
+                const filter = e.target.dataset.filter;
+                
+                // Update active button style
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active', 'bg-slate-800', 'text-white');
+                    btn.classList.add('bg-white', 'hover:bg-slate-100', 'text-slate-700');
+                });
+                e.target.classList.add('active', 'bg-slate-800', 'text-white');
+                e.target.classList.remove('bg-white', 'hover:bg-slate-100', 'text-slate-700');
+
+
+                // Filter projects
+                projects.forEach(project => {
+                    const projectSkills = project.dataset.skills;
+                    if (filter === 'all' || projectSkills.includes(filter)) {
+                        project.classList.remove('card-hidden');
+                    } else {
+                        project.classList.add('card-hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
